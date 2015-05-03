@@ -41,7 +41,7 @@ but it's not going to be very exciting without them.)
 brew install exiftool imagemagick
 ```
 
-Run the install script, which will configure your global git config for you.
+Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
 
 ```
