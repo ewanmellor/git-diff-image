@@ -9,6 +9,7 @@ f2="$5"
 
 name1="a/$name"
 name2="b/$name"
+ext="${name##*.}"
 
 
 if diff "$f1" "$f2" >/dev/null
@@ -59,6 +60,12 @@ fi
 bn=$(basename "$f1")
 destfile=$(mktemp -t "$bn").png
 
-compare "$f1" "$f2" png:- | \
+fuzz=
+if [ "$ext" = "jpeg" ] || [ "$ext" = "jpg" ]
+then
+  fuzz='-fuzz 5%'
+fi
+
+compare $fuzz "$f1" "$f2" png:- | \
   montage -geometry +4+4 "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
 open "$destfile"
