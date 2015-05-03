@@ -28,6 +28,9 @@ $ git diff-image
 # generated and opened in Preview.
 ```
 
+![Screenshot](example-comparison.png?raw=true)
+
+
 Installation
 ------------
 
