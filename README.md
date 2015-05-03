@@ -34,14 +34,14 @@ $ git diff-image
 Installation
 ------------
 
-Install exiftool and ImageMagick.  (The script will cope with these missing,
+1. Install exiftool and ImageMagick.  (The script will cope with these missing,
 but it's not going to be very exciting without them.)
 
 ```
 brew install exiftool imagemagick
 ```
 
-Run `./install.sh`, which will configure your global git config for you.
+2. Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
 
 ```
