@@ -42,6 +42,19 @@ brew install exiftool imagemagick
 ```
 
 Run the install script, which will configure your global git config for you.
+It will tell you what it's done, so it should look something like this:
+
+```
+~/git-diff-image $ ./install.sh
++ git config --global core.attributesfile '~/.gitattributes'
++ touch '/Users/yourname/.gitattributes'
++ echo '*.gif diff=image' >>'/Users/yourname/.gitattributes'
++ echo '*.jpeg diff=image' >>'/Users/yourname/.gitattributes'
++ echo '*.jpg diff=image' >>'/Users/yourname/.gitattributes'
++ echo '*.png diff=image' >>'/Users/yourname/.gitattributes'
++ git config --global alias.diff-image '!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
++ git config --global diff.image.command '~/git-diff-image/git_diff_image'
+```
 
 Public domain dedication
 ------------------------
