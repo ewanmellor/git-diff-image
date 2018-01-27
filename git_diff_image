@@ -10,6 +10,15 @@ name1="a/$name"
 name2="b/$name"
 ext="${name##*.}"
 
+if [ "$f1" = /dev/null ]
+then
+    name1=/dev/null
+fi
+if [ "$f2" = /dev/null ]
+then
+    name2=/dev/null
+fi
+
 
 if diff "$f1" "$f2" >/dev/null
 then
@@ -18,8 +27,15 @@ fi
 
 
 exif() {
+  if [ "$1" = /dev/null ]
+  then
+      echo /dev/null
+      return
+  fi
+
   local b=$(basename "$1")
   local d=$(mktemp -t "$b")
+
   exiftool "$1" | grep -v "File Name" | \
                   grep -v "Directory" | \
                   grep -v "File Inode Change" | \
