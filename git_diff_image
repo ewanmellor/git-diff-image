@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -eu
-set -o pipefail
+set -euo pipefail
 
 name="$1"
 f1="$2"
