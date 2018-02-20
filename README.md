@@ -35,16 +35,16 @@ Installation
 ------------
 
 1. Install exiftool and ImageMagick.  (The script will cope with these missing,
-but it's not going to be very exciting without them.)
+but it's not going to be very exciting without them).
 
-    ```
+```bash
 brew install exiftool imagemagick
-    ```
+```
 
 2. Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
 
-    ```
+```bash
 ~/git-diff-image $ ./install.sh
 + git config --global core.attributesfile '~/.gitattributes'
 + touch '/Users/yourname/.gitattributes'
@@ -54,7 +54,7 @@ It will tell you what it's done, so it should look something like this:
 + echo '*.png diff=image' >>'/Users/yourname/.gitattributes'
 + git config --global alias.diff-image '!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
 + git config --global diff.image.command '~/git-diff-image/git_diff_image'
-    ```
+```
 
 Public domain dedication
 ------------------------
