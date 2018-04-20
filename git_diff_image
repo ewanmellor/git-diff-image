@@ -8,7 +8,6 @@ f2="$5"
 
 name1="a/$name"
 name2="b/$name"
-ext="${name##*.}"
 
 if [ "$f1" = /dev/null ]
 then
@@ -26,61 +25,43 @@ then
 fi
 
 
-exif() {
-  if [ "$1" = /dev/null ]
-  then
-      echo /dev/null
-      return
-  fi
-
-  local b=$(basename "$1")
-  local d=$(mktemp -t "$b")
-
-  exiftool "$1" | grep -v "File Name" | \
-                  grep -v "Directory" | \
-                  grep -v "File Inode Change" | \
-                  grep -v "File Modification Date/Time" | \
-                  grep -v "File Permissions" \
-     >"$d"
-  echo "$d"
+readlink_f()
+{
+    if [ $(uname) = 'Darwin' ]
+    then
+        local f=$(readlink "$1")
+        if [ -z "$f" ]
+        then
+            f="$1"
+        fi
+        local d=$(dirname "$f")
+        local b=$(basename "$f")
+        if [ -d "$d" ]
+        then
+            (cd "$d" && echo "$(pwd -P)/$b")
+        elif [[ "$d" = /* ]]
+        then
+            echo "$f"
+        elif [[ "$d" = ./* ]]
+        then
+            echo "$(pwd -P)/${f/.\//}"
+        else
+            echo "$(pwd -P)/$f"
+        fi
+    else
+        readlink -f "$1"
+    fi
 }
 
+thisdir=$(dirname $(readlink_f "$0"))
 
-diff_clean_names() {
-  diff -u "$1" --label "$name1" "$2" --label "$name2" || true
-}
-
-
-if which -s exiftool
-then
-  d1=$(exif "$f1")
-  d2=$(exif "$f2")
-  diff_clean_names "$d1" "$d2"
-else
-  diff_clean_names "$f1" "$f2"
-fi
-
+e_flag=''
 if [ -z "${GIT_DIFF_IMAGE_ENABLED-}" ] || \
    ! which -s compare || \
    ! which -s montage
 then
-  exit 0
+  e_flag='-e'
 fi
 
-if compare "$f1" "$f2" /dev/null
-then
-  exit 0
-fi
 
-bn=$(basename "$f1")
-destfile=$(mktemp -t "$bn").png
-
-fuzz=
-if [ "$ext" = "jpeg" ] || [ "$ext" = "jpg" ]
-then
-  fuzz='-fuzz 5%'
-fi
-
-compare $fuzz "$f1" "$f2" png:- | \
-  montage -geometry +4+4 "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
-open "$destfile"
+exec "$thisdir/diff-image" $e_flag -n "$name1" -N "$name2" "$f1" "$f2"

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -eu
-set -o pipefail
+set -euo pipefail
 
 cols=$(tput cols)
 
@@ -75,3 +74,19 @@ git config --global alias.diff-image '!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "
 
 echo "+ git config --global diff.image.command '$thisdir_tilde/git_diff_image'"
 git config --global diff.image.command "$thisdir_tilde/git_diff_image"
+
+bin_diff_image_tilde="~/bin/diff-image"
+bin_diff_image="${bin_diff_image_tilde/#\~/$HOME}"
+if [ -e "$bin_diff_image" ]
+then
+    echo "# Leaving $bin_diff_image alone."
+else
+    if [ ! -d "$HOME/bin" ]
+    then
+        echo "+ mkdir -p ~/bin"
+        mkdir -p "$HOME/bin"
+    fi
+
+    echo "+ ln -s $thisdir_tilde/diff-image ~/bin/"
+    ln -s "$thisdir/diff-image" "$HOME/bin/"
+fi

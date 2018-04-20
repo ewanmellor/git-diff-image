@@ -2,11 +2,12 @@ git-diff-image
 ==============
 
 This is an extension to 'git diff' that provides support for diffing images.
+It can also be run as a direct CLI command for diffing two image files.
 
 Platforms
 ---------
 
-Only OS X at the moment.  Patches welcome!
+Only macOS at the moment.  Patches welcome!
 
 Examples
 --------
@@ -26,6 +27,9 @@ $ git diff
 $ git diff-image
 # The same output as above, *and* a montage of the visual differences will be
 # generated and opened in Preview.
+
+$ diff-image anImageThatHasChanged1.jpg anImageThatHasChanged2.jpg
+# The same as above, only using files on disk not git differences.
 ```
 
 ![Screenshot](example-comparison.png?raw=true)
