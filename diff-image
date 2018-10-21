@@ -12,7 +12,7 @@ usage()
     echo "  -c <color> Highlight differences with this color; defaults to red."
     echo "  -e         Show Exif differences only; don't compare the image data."
     echo "  -f <fuzz>  Use the specified percentage of fuzz.  Defaults to "
-    echo "                 5% for JPEGs, zero otherwise."    
+    echo "                 5% for JPEGs, zero otherwise."
     echo "  -n <name>  The name to give the first file."
     echo "  -N <name>  The name to give the second file."
     echo
@@ -60,24 +60,24 @@ fi
 f1="$1"
 f2="$2"
 
-if [ ! -f "$f1" ]
+if [[ "$f1" != '/dev/null' ]] && [[ ! -f "$f1" ]]
 then
     echo "$f1: No such file." >&2
     exit 1
 fi
 
-if [ ! -f "$f2" ]
+if [[ "$f2" != '/dev/null' ]] && [[ ! -f "$f2" ]]
 then
     echo "$f2: No such file." >&2
     usage
     exit 1
 fi
 
-if [ -z "$name1" ]
+if [[ -z "$name1" ]]
 then
     name1="$f1"
 fi
-if [ -z "$name2" ]
+if [[ -z "$name2" ]]
 then
     name1="$f2"
 fi
@@ -93,14 +93,14 @@ fi
 
 exif()
 {
-    if [ "$1" = /dev/null ]
+    if [[ "$1" = /dev/null ]]
     then
         echo /dev/null
         return
     fi
 
-    local b=$(basename "$1")
-    local d=$(mktemp -t "$b")
+    local b="$(basename "$1")"
+    local d="$(mktemp -t "$b.XXXXXX")"
 
     exiftool "$1" | grep -v 'File Name' | \
                     grep -v 'Directory' | \
@@ -121,10 +121,10 @@ diff_clean_names()
 }
 
 
-if which -s exiftool
+if which exiftool > /dev/null
 then
-  d1=$(exif "$f1")
-  d2=$(exif "$f2")
+  d1="$(exif "$f1")"
+  d2="$(exif "$f2")"
   diff_clean_names "$d1" "$d2"
 else
   diff_clean_names "$f1" "$f2"
@@ -136,8 +136,8 @@ then
 fi
 
 if \
-    ! which -s compare || \
-    ! which -s montage
+    ! which compare > /dev/null || \
+    ! which montage > /dev/null
 then
     echo 'ImageMagick is not installed.' >&2
     exit 1
@@ -148,8 +148,8 @@ then
     exit 0
 fi
 
-bn=$(basename "$f1")
-destfile=$(mktemp -t "$bn").png
+bn="$(basename "$f1")"
+destfile="$(mktemp -t "$bn.XXXXXX").png"
 
 if [ -z "$fuzz" ] && ( [ "$ext" = "jpeg" ] || [ "$ext" = "jpg" ] )
 then
@@ -170,4 +170,9 @@ fi
 
 compare $color_flag $fuzz_flag "$f1" "$f2" png:- | \
     montage -geometry +4+4 "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
-open "$destfile"
+if which xdg-open > /dev/null
+then
+    xdg-open "$destfile"
+else
+    open "$destfile"
+fi

@@ -53,12 +53,12 @@ readlink_f()
     fi
 }
 
-thisdir=$(dirname $(readlink_f "$0"))
+thisdir="$(dirname $(readlink_f "$0"))"
 
 e_flag=''
 if [ -z "${GIT_DIFF_IMAGE_ENABLED-}" ] || \
-   ! which -s compare || \
-   ! which -s montage
+   ! which compare > /dev/null || \
+   ! which montage > /dev/null
 then
   e_flag='-e'
 fi
