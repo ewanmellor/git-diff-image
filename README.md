@@ -7,7 +7,7 @@ It can also be run as a direct CLI command for diffing two image files.
 Platforms
 ---------
 
-Only macOS at the moment.  Patches welcome!
+Only macOS and Linux at the moment.  Patches welcome!
 
 Examples
 --------
@@ -41,9 +41,17 @@ Installation
 1. Install exiftool and ImageMagick.  (The script will cope with these missing,
 but it's not going to be very exciting without them).
 
-```bash
-brew install exiftool imagemagick
-```
+   macOS:
+
+   ```bash
+   brew install exiftool imagemagick
+   ```
+
+   Debian / Ubuntu:
+
+   ```bash
+   sudo apt install exiftool imagemagick xdg-open
+   ```
 
 2. Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
