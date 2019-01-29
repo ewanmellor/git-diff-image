@@ -9,6 +9,7 @@ usage()
     echo
     echo "Options:"
     echo "  -h         Print this help."
+    echo "  -b <color> Use this as the background color; defaults to white."
     echo "  -c <color> Highlight differences with this color; defaults to red."
     echo "  -e         Show Exif differences only; don't compare the image data."
     echo "  -f <fuzz>  Use the specified percentage of fuzz.  Defaults to "
@@ -19,17 +20,21 @@ usage()
 }
 
 
+backgroundcolor=
 color=
 exif_only=false
 fuzz=
 name1=
 name2=
-while getopts "hc:ef:n:N:" opt
+while getopts "hb:c:ef:n:N:" opt
 do
     case "$opt" in
     h)
         usage
         exit 0
+        ;;
+    b)
+        backgroundcolor="$OPTARG"
         ;;
     c)
         color="$OPTARG"
@@ -156,6 +161,12 @@ then
     fuzz='5'
 fi
 
+backgroundcolor_flag=
+if [ -n "$backgroundcolor" ]
+then
+    backgroundcolor_flag="-background $backgroundcolor"
+fi
+
 color_flag=
 if [ -n "$color" ]
 then
@@ -168,8 +179,8 @@ then
     fuzz_flag="-fuzz $fuzz%"
 fi
 
-compare $color_flag $fuzz_flag "$f1" "$f2" png:- | \
-    montage -geometry +4+4 "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+compare $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
+    montage -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
 if which xdg-open > /dev/null
 then
     xdg-open "$destfile"
