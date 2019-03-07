@@ -71,6 +71,12 @@ then
     exit 1
 fi
 
+if [[ -d "$f2" ]]
+then
+   f=$(basename "$f1")
+   f2="$f2/$f"
+fi
+
 if [[ "$f2" != '/dev/null' ]] && [[ ! -f "$f2" ]]
 then
     echo "$f2: No such file." >&2
