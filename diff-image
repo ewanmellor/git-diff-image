@@ -132,11 +132,16 @@ diff_clean_names()
 }
 
 
+exifdiff=
 if which exiftool > /dev/null
 then
   d1="$(exif "$f1")"
   d2="$(exif "$f2")"
   diff_clean_names "$d1" "$d2"
+  set +e
+  diff -q "$d1" "$d2" >/dev/null
+  exifdiff=$?
+  set -e
 else
   diff_clean_names "$f1" "$f2"
 fi
@@ -154,7 +159,7 @@ then
     exit 1
 fi
 
-if compare "$f1" "$f2" /dev/null
+if [[ $exifdiff = 0 ]] && compare "$f1" "$f2" /dev/null
 then
     exit 0
 fi
