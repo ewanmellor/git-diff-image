@@ -3,8 +3,8 @@
 set -euo pipefail
 
 name="$1"
-f1="$2"
-f2="$5"
+f1="${2-/dev/null}"
+f2="${5-/dev/null}"
 
 name1="a/$name"
 name2="b/$name"
