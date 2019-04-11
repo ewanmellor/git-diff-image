@@ -190,11 +190,24 @@ then
     fuzz_flag="-fuzz $fuzz%"
 fi
 
-compare $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
-    montage -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+do_compare()
+{
+    compare $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
+        montage -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+}
+
 if which xdg-open > /dev/null
 then
+    do_compare
     xdg-open "$destfile"
 else
-    open "$destfile"
+    w=$(exiftool -p '$ImageWidth' "$f1" || true)
+    if [[ $w -ge 10000 ]]
+    then
+        cp "$f1" "$destfile"
+        exec open "$destfile" "$f2"
+    else
+        do_compare
+        exec open "$destfile"
+    fi
 fi
