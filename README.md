@@ -64,7 +64,7 @@ It will tell you what it's done, so it should look something like this:
 + echo '*.jpeg diff=image' >>'/Users/yourname/.gitattributes'
 + echo '*.jpg diff=image' >>'/Users/yourname/.gitattributes'
 + echo '*.png diff=image' >>'/Users/yourname/.gitattributes'
-+ git config --global alias.diff-image '!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
++ git config --global alias.diff-image '!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
 + git config --global diff.image.command '~/git-diff-image/git_diff_image'
 ```
 

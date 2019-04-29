@@ -69,8 +69,8 @@ addattr jpeg
 addattr jpg
 addattr png
 
-echo '+ git config --global alias.diff-image '"'"'!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'"'"
-git config --global alias.diff-image '!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
+echo '+ git config --global alias.diff-image '"'"'!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'"'"
+git config --global alias.diff-image '!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
 
 echo "+ git config --global diff.image.command '$thisdir_tilde/git_diff_image'"
 git config --global diff.image.command "$thisdir_tilde/git_diff_image"
