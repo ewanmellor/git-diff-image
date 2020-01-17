@@ -52,6 +52,12 @@ but it's not going to be very exciting without them).
    ```bash
    sudo apt install exiftool imagemagick xdg-open
    ```
+   
+   Arch Linux:
+  
+   ```bash
+   pacman -S xdg-utils perl-image-exiftool imagemagick
+   ```
 
 2. Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
