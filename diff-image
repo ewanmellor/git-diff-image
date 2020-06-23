@@ -190,14 +190,51 @@ then
     fuzz_flag="-fuzz $fuzz%"
 fi
 
+density_flag=
 do_compare()
 {
-    compare $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
-        montage -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+    compare $density_flag $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
+        montage $density_flag -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
 }
 
 if which xdg-open > /dev/null
 then
+    # Get width and height of each input image.
+    f1_width="$(exiftool -S -ImageWidth $f1 | cut -d' ' -f2)"
+    f2_width="$(exiftool -S -ImageWidth $f2 | cut -d' ' -f2)"
+    f1_height="$(exiftool -S -ImageHeight $f1 | cut -d' ' -f2)"
+    f2_height="$(exiftool -S -ImageHeight $f2 | cut -d' ' -f2)"
+    # find the max of each.
+    if (( $(echo "$f1_width > $f2_width" |bc -l) )); then
+        max_file_width=$f1_width
+    else
+        max_file_width=$f2_width
+    fi
+    if (( $(echo "$f1_height > $f2_height" |bc -l) )); then
+        max_file_height=$f1_height
+    else
+        max_file_height=$f2_height
+    fi
+    screen_width="$(xdpyinfo | grep dimensions | sed -e 's/.* \([^ ]*\)x\([^ ]*\) pixels.*/\1/')"
+    screen_height="$(xdpyinfo | grep dimensions | sed -e 's/.* \([^ ]*\)x\([^ ]*\) pixels.*/\2/')"
+    resolution_width="$(xdpyinfo | grep resolution | sed -e 's/.* \([^ ]*\)x\([^ ]*\) dots per inch.*/\1/')"
+    resolution_height="$(xdpyinfo | grep resolution | sed -e 's/.* \([^ ]*\)x\([^ ]*\) dots per inch.*/\2/')"
+    # Assume that the combined size will be the same as the maximum of
+    # each.  Add 100 pixels on each side for the window borders.
+    montage_width=$( echo "$f1_width + $max_file_width + $f2_width + 100" |bc -l )
+    montage_height=$( echo "$f1_height + $max_file_height + $f2_height + 100" |bc -l )
+    # Select the most limiting (lowest) density.
+    if (( $(echo "($resolution_width / $montage_width * $screen_width) < ($resolution_height / $montage_height * $screen_height)" |bc -l) )); then
+        density=$( echo "$resolution_width / $montage_width * $screen_width" |bc -l )
+    else
+        density=$( echo "$resolution_height / $montage_height * $screen_height" |bc -l )
+    fi
+
+    # If the density needed is less than either of the inputs, use it.
+    if (( $(echo "$density < $resolution_width || $density < $resolution_height" |bc -l) )); then
+        density_flag="-density $density"
+    fi
+
     do_compare
     xdg-open "$destfile"
 else
