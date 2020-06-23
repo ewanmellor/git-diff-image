@@ -68,6 +68,7 @@ addattr gif
 addattr jpeg
 addattr jpg
 addattr png
+addattr svg
 
 echo '+ git config --global alias.diff-image '"'"'!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'"'"
 git config --global alias.diff-image '!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
