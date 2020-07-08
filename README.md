@@ -56,7 +56,7 @@ but it's not going to be very exciting without them).
    Arch Linux:
   
    ```bash
-   pacman -S xdg-utils perl-image-exiftool imagemagick
+   pacman -S xdg-utils perl-image-exiftool imagemagick xorg-xdpyinfo
    ```
 
 2. Run `./install.sh`, which will configure your global git config for you.
