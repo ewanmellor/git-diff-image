@@ -47,7 +47,12 @@ but it's not going to be very exciting without them).
    brew install exiftool imagemagick
    ```
 
-   Debian / Ubuntu:
+   Debian / Ubuntu (new versions):
+   ```bash
+   sudo apt install exiftool imagemagick xdg-utils
+   ```
+
+   Debian / Ubuntu (older versions):
 
    ```bash
    sudo apt install exiftool imagemagick xdg-open
