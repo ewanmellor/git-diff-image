@@ -120,7 +120,8 @@ exif()
                     grep -v 'File Access Date/Time' | \
                     grep -v 'File Modification Date/Time' | \
                     grep -v 'File Permissions' | \
-                    grep -v 'File Type Extension' \
+                    grep -v 'File Type Extension' | \
+                    sort \
         >"$d"
     echo "$d"
 }
