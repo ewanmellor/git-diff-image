@@ -201,10 +201,10 @@ do_compare()
 if which xdg-open > /dev/null
 then
     # Get width and height of each input image.
-    f1_width="$(exiftool -S -ImageWidth $f1 | cut -d' ' -f2)"
-    f2_width="$(exiftool -S -ImageWidth $f2 | cut -d' ' -f2)"
-    f1_height="$(exiftool -S -ImageHeight $f1 | cut -d' ' -f2)"
-    f2_height="$(exiftool -S -ImageHeight $f2 | cut -d' ' -f2)"
+    f1_width="$(exiftool -S -ImageWidth "$f1" | cut -d' ' -f2)"
+    f2_width="$(exiftool -S -ImageWidth "$f2" | cut -d' ' -f2)"
+    f1_height="$(exiftool -S -ImageHeight "$f1" | cut -d' ' -f2)"
+    f2_height="$(exiftool -S -ImageHeight "$f2" | cut -d' ' -f2)"
     # find the max of each.
     if (( $(echo "$f1_width > $f2_width" |bc -l) )); then
         max_file_width=$f1_width
