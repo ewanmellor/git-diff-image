@@ -64,6 +64,7 @@ then
   fi
 fi
 
+addattr bmp
 addattr gif
 addattr jpeg
 addattr jpg
