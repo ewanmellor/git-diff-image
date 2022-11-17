@@ -66,6 +66,7 @@ fi
 
 addattr bmp
 addattr gif
+addattr heic
 addattr jpeg
 addattr jpg
 addattr png
