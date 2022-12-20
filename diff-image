@@ -90,7 +90,7 @@ then
 fi
 if [[ -z "$name2" ]]
 then
-    name1="$f2"
+    name2="$f2"
 fi
 
 ext="${name1##*.}"
