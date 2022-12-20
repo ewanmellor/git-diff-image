@@ -27,6 +27,7 @@ fi
 
 readlink_f()
 {
+    # shellcheck disable=SC2046
     if [ $(uname) = 'Darwin' ]
     then
         local f=$(readlink "$1")
@@ -53,7 +54,7 @@ readlink_f()
     fi
 }
 
-thisdir="$(dirname $(readlink_f "$0"))"
+thisDir="$(dirname $(readlink_f "$0"))"
 
 e_flag=''
 if [ -z "${GIT_DIFF_IMAGE_ENABLED-}" ] || \
@@ -78,4 +79,4 @@ then
 fi
 
 
-exec "$thisdir/diff-image" $e_flag $o_flag -n "$name1" -N "$name2" "$f1" "$f2"
+exec "$thisDir/diff-image" $e_flag $o_flag -n "$name1" -N "$name2" "$f1" "$f2"

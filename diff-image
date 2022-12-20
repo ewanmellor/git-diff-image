@@ -20,7 +20,7 @@ usage()
 }
 
 
-backgroundcolor=
+backgroundColor=
 color=
 exif_only=false
 fuzz=
@@ -30,13 +30,14 @@ outputPath=
 
 while getopts "hb:c:ef:n:N:o:" opt
 do
+    # shellcheck disable=SC2220
     case "$opt" in
     h)
         usage
         exit 0
         ;;
     b)
-        backgroundcolor="$OPTARG"
+        backgroundColor="$OPTARG"
         ;;
     c)
         color="$OPTARG"
@@ -179,9 +180,9 @@ then
 fi
 
 backgroundcolor_flag=
-if [ -n "$backgroundcolor" ]
+if [ -n "$backgroundColor" ]
 then
-    backgroundcolor_flag="-background $backgroundcolor"
+    backgroundcolor_flag="-background $backgroundColor"
 fi
 
 color_flag=
@@ -199,8 +200,8 @@ fi
 density_flag=
 do_compare()
 {
-    compare $density_flag $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
-        montage $density_flag -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+    compare "$density_flag" "$color_flag" "$fuzz_flag" "$backgroundcolor_flag" "$f1" "$f2" png:- | \
+        montage "$density_flag" -geometry +4+4 "$backgroundcolor_flag" "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
 }
 
 if which xdg-open > /dev/null
