@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-
 usage()
 {
     echo "Usage: $0 [<options>] <file1> <file2>"
@@ -16,6 +15,7 @@ usage()
     echo "                 5% for JPEGs, zero otherwise."
     echo "  -n <name>  The name to give the first file."
     echo "  -N <name>  The name to give the second file."
+    echo "  -o <path>  Output pathname to save diff instead of showing it"
     echo
 }
 
@@ -26,7 +26,9 @@ exif_only=false
 fuzz=
 name1=
 name2=
-while getopts "hb:c:ef:n:N:" opt
+outputPath=
+
+while getopts "hb:c:ef:n:N:o:" opt
 do
     case "$opt" in
     h)
@@ -50,6 +52,9 @@ do
         ;;
     N)
         name2="$OPTARG"
+        ;;
+    o)
+        outputPath="$OPTARG"
         ;;
     esac
 done
@@ -237,7 +242,13 @@ then
     fi
 
     do_compare
-    xdg-open "$destfile"
+    if [ -n "$outputPath" ]
+    then
+      echo "Copy diff image to $outputPath"
+      cp "$destfile" "$outputPath"
+    else
+      xdg-open "$destfile"
+    fi
 else
     w=$(exiftool -p '$ImageWidth' "$f1" || true)
     if [[ $w -ge 10000 ]]
@@ -246,6 +257,12 @@ else
         exec open "$destfile" "$f2"
     else
         do_compare
-        exec open "$destfile"
+        if [ -n "$outputPath" ]
+        then
+          echo "Copy diff image to $outputPath"
+          cp "$destfile" "$outputPath"
+        else
+          exec open "$destfile"
+        fi
     fi
 fi
