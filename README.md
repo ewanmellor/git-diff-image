@@ -79,6 +79,29 @@ It will tell you what it's done, so it should look something like this:
 + git config --global diff.image.command '~/git-diff-image/git_diff_image'
 ```
 
+Git LFS
+-------
+
+If you are using Git LFS then you have some extra manual configuration.
+This has been left as a manual step because you need to choose whether
+to do this on a per-repository basis or set it in your global configuration.
+
+Instead of the default configuration in `~/.gitattributes` which looks
+like this:
+
+```
+*.png diff=image
+```
+
+You need to extend it to look something like this:
+
+```
+*.png filter=lfs diff=lfs diff=image merge=lfs -text
+```
+
+You can either do this in your `~/.gitattributes` or a `.gitattributes` file
+at the root of each repository.
+
 Public domain dedication
 ------------------------
 
