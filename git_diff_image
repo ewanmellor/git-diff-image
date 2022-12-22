@@ -68,7 +68,7 @@ if [ -n "${GIT_DIFF_IMAGE_OUTPUT_DIR-}" ]
 then
     mkdir -p "$GIT_DIFF_IMAGE_OUTPUT_DIR"
     destfile=''
-    if [ "$name1" -ne '/dev/null' ]
+    if [ "$name1" = '/dev/null' ]
     then
         destfile=$(basename "$name1")
     else
