@@ -2,8 +2,11 @@
 
 set -euo pipefail
 
-cols=$(tput cols)
-
+cols=80
+if [ -n "$TERM" ]
+then
+  cols=$(tput cols)
+fi
 
 readlink_f() {
   if [ $(uname) = 'Darwin' ]
