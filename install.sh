@@ -3,7 +3,7 @@
 set -euo pipefail
 
 cols=80
-if [ -n "$TERM" ]
+if [ "$TERM" != "dumb" ]
 then
   cols=$(tput cols)
 fi
