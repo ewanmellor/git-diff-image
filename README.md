@@ -64,6 +64,12 @@ but it's not going to be very exciting without them).
    pacman -S xdg-utils perl-image-exiftool imagemagick xorg-xdpyinfo
    ```
 
+   openSUSE Tumbleweed:
+  
+   ```bash
+   sudo zypper install exiftool ImageMagick xdg-utils bc
+   ```
+   
 2. Run `./install.sh`, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
 
