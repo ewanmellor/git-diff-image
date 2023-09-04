@@ -38,9 +38,9 @@ $ diff-image anImageThatHasChanged1.jpg anImageThatHasChanged2.jpg
 Installation
 ------------
 
-1. Install exiftool and ImageMagick or ImageMagick with the compatibility links.
-(The script will cope with these missing, but it's not going to be very exciting
-without them).
+1. Install exiftool and either ImageMagick or GraphicsMagick with the
+ImageMagick compatibility links. (The script will cope with these missing,
+but it's not going to be very exciting without them).
 
    macOS:
 
