@@ -38,8 +38,9 @@ $ diff-image anImageThatHasChanged1.jpg anImageThatHasChanged2.jpg
 Installation
 ------------
 
-1. Install exiftool and ImageMagick.  (The script will cope with these missing,
-but it's not going to be very exciting without them).
+1. Install exiftool and ImageMagick or ImageMagick with the compatibility links.
+(The script will cope with these missing, but it's not going to be very exciting
+without them).
 
    macOS:
 
@@ -57,7 +58,12 @@ but it's not going to be very exciting without them).
    ```bash
    sudo apt install exiftool imagemagick xdg-open
    ```
-   
+
+   Debian / Ubuntu (if using GraphicsMagick):
+   ```bash
+   sudo apt install exiftool graphicsmagick graphicsmagick-imagemagick-compat xdg-utils
+   ```
+
    Arch Linux:
   
    ```bash

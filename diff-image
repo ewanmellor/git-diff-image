@@ -161,7 +161,16 @@ if \
     ! which compare > /dev/null || \
     ! which montage > /dev/null
 then
-    echo 'ImageMagick is not installed.' >&2
+    if which gm > /dev/null
+    then
+        echo 'GraphicsMagick is installed, but graphicsmagick-imagemagick-compat missing.' >&2
+        echo 'Alternatively the minimum required compatibility links can be installed' >&2
+        echo 'by running:' >&2
+        echo '    sudo ln -s gm /usr/bin/compare' >&2
+        echo '    sudo ln -s gm /usr/bin/montage' >&2
+    else
+        echo 'ImageMagick or GraphicsMagick is not installed.' >&2
+    fi
     exit 1
 fi
 
@@ -199,8 +208,15 @@ fi
 density_flag=
 do_compare()
 {
+  if which gm > /dev/null
+  then
+    echo "NOTICE: GraphicsMagick does not support 'compare -fuzz', so omitting it"
+    compare $density_flag $color_flag $backgroundcolor_flag -file png:- "$f1" "$f2" | \
+        montage $density_flag -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+  else
     compare $density_flag $color_flag $fuzz_flag $backgroundcolor_flag "$f1" "$f2" png:- | \
         montage $density_flag -geometry +4+4 $backgroundcolor_flag "$f1" - "$f2" png:- >"$destfile" 2>/dev/null || true
+  fi
 }
 
 if which xdg-open > /dev/null
