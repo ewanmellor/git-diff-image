@@ -78,8 +78,8 @@ fi
 
 if [[ -d "$f2" ]]
 then
-   f=$(basename "$f1")
-   f2="$f2/$f"
+    f=$(basename "$f1")
+    f2="$f2/$f"
 fi
 
 if [[ "$f2" != '/dev/null' ]] && [[ ! -f "$f2" ]]
@@ -103,7 +103,7 @@ ext="${name1##*.}"
 
 if diff "$f1" "$f2" >/dev/null
 then
-  exit 0
+    exit 0
 fi
 
 
@@ -141,15 +141,15 @@ diff_clean_names()
 exifdiff=
 if which exiftool > /dev/null
 then
-  d1="$(exif "$f1")"
-  d2="$(exif "$f2")"
-  diff_clean_names "$d1" "$d2"
-  set +e
-  diff -q "$d1" "$d2" >/dev/null
-  exifdiff=$?
-  set -e
+    d1="$(exif "$f1")"
+    d2="$(exif "$f2")"
+    diff_clean_names "$d1" "$d2"
+    set +e
+    diff -q "$d1" "$d2" >/dev/null
+    exifdiff=$?
+    set -e
 else
-  diff_clean_names "$f1" "$f2"
+    diff_clean_names "$f1" "$f2"
 fi
 
 if $exif_only
@@ -244,10 +244,10 @@ then
     do_compare
     if [ -n "$outputPath" ]
     then
-      echo "Copy diff image to $outputPath"
-      cp "$destfile" "$outputPath"
+        echo "Copy diff image to $outputPath"
+        cp "$destfile" "$outputPath"
     else
-      xdg-open "$destfile"
+        xdg-open "$destfile"
     fi
 else
     w=$(exiftool -p '$ImageWidth' "$f1" || true)
@@ -259,10 +259,10 @@ else
         do_compare
         if [ -n "$outputPath" ]
         then
-          echo "Copy diff image to $outputPath"
-          cp "$destfile" "$outputPath"
+            echo "Copy diff image to $outputPath"
+            cp "$destfile" "$outputPath"
         else
-          exec open "$destfile"
+            exec open "$destfile"
         fi
     fi
 fi
