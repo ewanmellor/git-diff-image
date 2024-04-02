@@ -48,20 +48,14 @@ but it's not going to be very exciting without them).
    brew install exiftool imagemagick
    ```
 
-   Debian / Ubuntu (new versions):
+   Debian / Ubuntu:
    ```bash
-   sudo apt install exiftool imagemagick xdg-utils
-   ```
-
-   Debian / Ubuntu (older versions):
-
-   ```bash
-   sudo apt install exiftool imagemagick xdg-open
+   sudo apt install libimage-exiftool-perl imagemagick xdg-utils
    ```
 
    Debian / Ubuntu (if using GraphicsMagick):
    ```bash
-   sudo apt install exiftool graphicsmagick graphicsmagick-imagemagick-compat xdg-utils
+   sudo apt install libimage-exiftool-perl graphicsmagick graphicsmagick-imagemagick-compat xdg-utils
    ```
 
    Arch Linux:
