@@ -32,7 +32,7 @@ $ diff-image anImageThatHasChanged1.jpg anImageThatHasChanged2.jpg
 # The same as above, only using files on disk not git differences.
 ```
 
-![Screenshot](example-comparison.png?raw=true)
+![Screenshot](./images/example-comparison.png?raw=true)
 
 
 Installation
@@ -89,6 +89,17 @@ It will tell you what it's done, so it should look something like this:
 + echo '*.png diff=image' >>'/Users/yourname/.gitattributes'
 + git config --global alias.diff-image '!f() { cd -- "${GIT_PREFIX:-.}"; GIT_DIFF_IMAGE_ENABLED=1 git diff "$@"; }; f'
 + git config --global diff.image.command '~/git-diff-image/git_diff_image'
+```
+
+Try without installation
+------------------------
+
+```
+git config diff.image.command $(realpath diff-image)
+cd images
+make earth_with_label.jpg
+cp earth_with_label.jpg earth.jpg
+git diff earth.jpg
 ```
 
 Git LFS
