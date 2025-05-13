@@ -208,7 +208,7 @@ fi
 density_flag=
 do_compare()
 {
-  if which gm > /dev/null
+  if compare --version | head -1 | grep -q "GraphicsMagick"
   then
     echo "NOTICE: GraphicsMagick does not support 'compare -fuzz', so omitting it"
     compare $density_flag $color_flag $backgroundcolor_flag -file png:- "$f1" "$f2" | \
