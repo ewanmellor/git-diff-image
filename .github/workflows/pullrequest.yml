@@ -1,0 +1,57 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+env:
+  resourceRunID: ${{ github.run_id }}-${{ github.run_number }}
+
+jobs:
+  Build:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ Ubuntu-24.04 ]
+        prepare: [ sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg ]
+        include:
+          - os: macos-15
+            prepare: export PATH=/opt/homebrew/bin:$PATH && brew install exiftool imagemagick && brew outdated jq || brew install jq
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Prepare ${{ matrix.os }} environment
+        run: |
+          ${{ matrix.prepare }}
+
+      - name: Install git-diff-image
+        if: ${{ always() }}
+        run: |
+          ./install.sh
+
+      - name: Compare screenshots
+        if: ${{ always() }}
+        run: |
+          git status
+          cp ./test/false_StartTest_smokeTestStart.png ./screenshotsToCompare/StartTest_smokeTestStart.png
+          ./test/testDiffImage.sh
+
+      - name: Archive screenshots diffs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: diffs-${{ matrix.os }}
+          path: |
+            screenshotDiffs
+      - name: Show git status
+        if: ${{ always() }}
+        run: |
+          git reset --hard
+          git add screenshotDiffs
+          git status
