@@ -67,13 +67,7 @@ o_flag=''
 if [ -n "${GIT_DIFF_IMAGE_OUTPUT_DIR-}" ]
 then
     mkdir -p "$GIT_DIFF_IMAGE_OUTPUT_DIR"
-    destfile=''
-    if [ "$name1" = '/dev/null' ]
-    then
-        destfile=$(basename "$name1")
-    else
-        destfile=$(basename "$name2")
-    fi
+    destfile=$(basename "$name")
     o_flag="-o $GIT_DIFF_IMAGE_OUTPUT_DIR/$destfile"
 fi
 
