@@ -126,6 +126,7 @@ exif()
                     grep -v 'File Modification Date/Time' | \
                     grep -v 'File Permissions' | \
                     grep -v 'File Type Extension' | \
+                    grep -v 'File Size' | \
                     sort \
         >"$d"
     echo "$d"
@@ -174,18 +175,32 @@ then
     exit 1
 fi
 
-if [[ $exifdiff = 0 ]] && compare "$f1" "$f2" /dev/null
+if [ -z "$fuzz" ] && ( [ "$ext" = "jpeg" ] || [ "$ext" = "jpg" ] )
+then
+    fuzz='5'
+fi
+
+# GraphicsMagick's compare doesn't understand -fuzz (see the NOTICE in
+# do_compare below), so leave it out there too rather than letting it error.
+fuzz_flag=
+if [ -n "$fuzz" ] && ! which gm > /dev/null
+then
+    fuzz_flag="-fuzz $fuzz%"
+fi
+
+# Pre-check with the same fuzz that do_compare below will use. Without this,
+# an exact (unfuzzed) compare here can find a difference that is entirely
+# within the fuzz tolerance, so the pre-check falls through, a diff montage
+# gets written below, and that montage shows nothing highlighted -- it's
+# just noise. Using -metric AE against null: (no image output) keeps this
+# cheap and respects fuzz exactly the way do_compare does.
+if [[ $exifdiff = 0 ]] && compare -metric AE $fuzz_flag "$f1" "$f2" null: 2>/dev/null
 then
     exit 0
 fi
 
 bn="$(basename "$f1")"
 destfile="$(mktemp -t "$bn.XXXXXX").png"
-
-if [ -z "$fuzz" ] && ( [ "$ext" = "jpeg" ] || [ "$ext" = "jpg" ] )
-then
-    fuzz='5'
-fi
 
 backgroundcolor_flag=
 if [ -n "$backgroundcolor" ]
@@ -197,12 +212,6 @@ color_flag=
 if [ -n "$color" ]
 then
     color_flag="-highlight-color $color"
-fi
-
-fuzz_flag=
-if [ -n "$fuzz" ]
-then
-    fuzz_flag="-fuzz $fuzz%"
 fi
 
 density_flag=

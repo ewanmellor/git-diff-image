@@ -77,5 +77,11 @@ then
     o_flag="-o $GIT_DIFF_IMAGE_OUTPUT_DIR/$destfile"
 fi
 
+f_flag=''
+if [ -n "${GIT_DIFF_IMAGE_FUZZ-}" ]
+then
+    f_flag="-f $GIT_DIFF_IMAGE_FUZZ"
+fi
 
-exec "$thisdir/diff-image" $e_flag $o_flag -n "$name1" -N "$name2" "$f1" "$f2"
+
+exec "$thisdir/diff-image" $e_flag $o_flag $f_flag -n "$name1" -N "$name2" "$f1" "$f2"

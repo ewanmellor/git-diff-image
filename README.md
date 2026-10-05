@@ -91,6 +91,20 @@ It will tell you what it's done, so it should look something like this:
 + git config --global diff.image.command '~/git-diff-image/git_diff_image'
 ```
 
+Environment variables
+----------------------
+
+`git diff-image` (as installed above) honours a couple of environment
+variables to control its behaviour:
+
+* `GIT_DIFF_IMAGE_OUTPUT_DIR`: write each diff montage as a PNG into this
+  directory instead of opening it, e.g. for use in CI.
+* `GIT_DIFF_IMAGE_FUZZ`: pass this percentage of fuzz to `compare` for every
+  image, not just JPEGs (which otherwise default to 5%). This is useful for
+  PNG screenshot comparisons, where anti-aliasing or rendering jitter between
+  runs would otherwise be flagged as a difference, e.g.
+  `GIT_DIFF_IMAGE_FUZZ=5 git diff-image`.
+
 Git LFS
 -------
 
